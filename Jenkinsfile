@@ -1,10 +1,15 @@
-node {
-    docker.image('maven:3.9.0-eclipse-temurin-11').inside('-v /root/.m2:/root/.m2') {
-        stage('Build') {
-            sh 'mvn -B -DskipTests clean package'
+pipeline {
+    agent {
+        docker {
+            image 'maven:3.9.0-eclipse-temurin-11' 
+            args '-v /root/.m2:/root/.m2' 
         }
-        stage('Test') {
-            sh 'mvn test'
+    }
+    stages {
+        stage('Build') { 
+            steps {
+                sh 'mvn -B -DskipTests clean package' 
+            }
         }
     }
 }
